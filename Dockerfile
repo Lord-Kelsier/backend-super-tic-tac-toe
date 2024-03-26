@@ -6,9 +6,10 @@ WORKDIR /App
 COPY . .
 
 RUN apt-get update
+RUN apt-get -y install git
 RUN /usr/local/bin/python -m pip install --upgrade pip
 RUN python -m pip install -r requirements.txt
-RUN python manage.py createsuperuser --username admin --email econtreraslazcano@uc.cl
-RUN python ./manage.py migrate
+RUN ./manage.py migrate
+EXPOSE 8000
 
-CMD ["python", "./manage.py", "runserver", "localhost:8000"]
+CMD ["./manage.py", "runserver", "0.0.0.0:8000"]
