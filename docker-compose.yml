@@ -2,8 +2,14 @@ version: '3.9'
 services:
   backend:
     container_name: backend
+    networks:
+      - db
     build: .
     volumes:
       - .:/App
     ports:
       - 5318:8000
+networks:
+  db:
+    name: backend-network
+    external: true
