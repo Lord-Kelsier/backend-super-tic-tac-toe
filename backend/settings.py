@@ -108,6 +108,9 @@ DATABASES = {
     'PASSWORD': config["DB_PASSWORD"],
     'HOST': config["DB_HOST"],
     'PORT': config["DB_PORT"],        
+  },
+  'test': {
+    'NAME': f"test_{config('DB_NAME')}",
   }
 }
 
