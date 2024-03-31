@@ -118,9 +118,9 @@ docker compose -f docker-compose-dev.yml up -d
 
 - [ ] `PATCH /api-v1/lobby/enter_lobby/` - enter a lobby - Authenticated users and without any lobby
 - [ ] `PATCH /api-v1/lobby/leave_lobby/` - leave a lobby - Users in lobby only
+- [ ] `PATCH /api-v1/lobby/start_game/` - start a game - Owner only
 
 #### Not implemented
 
-- [ ] `PATCH /api-v1/lobby/start_game/` - start a game - Owner only
 - [ ] `PATCH /api-v1/lobby/end_game/` - end a game - Owner only
 - [ ] `PATCH /api-v1/lobby/kick_user/` - remove a user from a lobby - Owner only
