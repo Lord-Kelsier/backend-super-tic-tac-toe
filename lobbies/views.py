@@ -36,7 +36,6 @@ class LobbyView(viewsets.ModelViewSet):
     queryset = Lobby.objects.all()
     lobby = get_object_or_404(queryset, pk=pk)
     user = self.request.user
-    print(user.lobby)
     if lobby.players.contains(user):
       return Response(data={
           'detail': f'Already inside lobby {lobby.title}'
