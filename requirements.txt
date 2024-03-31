@@ -3,3 +3,9 @@ djangorestframework==3.15.1
 python-dotenv
 psycopg2-binary
 django-cors-headers
+pyyaml
+uritemplate
+inflection
+coreapi
+djangorestframework-simplejwt
+django-filter
