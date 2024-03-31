@@ -110,7 +110,7 @@ DATABASES = {
     'PORT': config["DB_PORT"],        
   },
   'test': {
-    'NAME': f"test_{config('DB_NAME')}",
+    'NAME': f"test_{config['DB_NAME']}",
   }
 }
 

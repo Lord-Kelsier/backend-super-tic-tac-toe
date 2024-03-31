@@ -86,7 +86,6 @@ psql -U postgres
 
 ```sql
 CREATE DATABASE super_tic_tac_toe;
-CREATE DATABASE test_super_tic_tac_toe;
 ```
 
 Now you can run the project with the first steps.
