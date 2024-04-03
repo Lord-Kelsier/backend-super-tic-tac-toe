@@ -18,7 +18,6 @@ def create_lobby(user: User = None, game = 0, title = None) -> Lobby:
     title = title
   )
   lobby.players.set([user])
-  user.lobby.add(lobby)
   return lobby
 
 class LobbyViewDetailTest(APITestCase):
