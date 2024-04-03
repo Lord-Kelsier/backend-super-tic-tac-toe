@@ -132,3 +132,28 @@ class UsersViewsListTests(APITestCase):
     self.assertEqual(response.status_code, 204)
     with self.assertRaises(User.DoesNotExist):
       User.objects.get(id=user.id)
+
+class LoginAndRegistrationTests(APITestCase):
+  def test_unique_username_and_email(self):
+    """
+    Usernames and emails must be unique
+    """
+    pass
+  def test_password(self):
+    """
+    Passwords must be in X format
+    """
+    pass
+  def test_login_for_non_registered(self):
+    """
+    Login to non registered should redirect to register
+    """
+  def test_success_register_and_login(self):
+    """
+    Testing happy path for users
+    """
+    pass
+  def test_register_for_already_registered(self):
+    """
+    Users already registered should be redirected to login
+    """

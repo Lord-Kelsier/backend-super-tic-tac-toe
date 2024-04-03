@@ -169,6 +169,25 @@ class LobbyViewDetailTest(APITestCase):
     self.assertEqual(updated_lobby.title, new_title)
     
     
-    
+  def test_delete_lobby(self):
+    """
+    DELETE is only allowed to owners
+    """
+    pass
+  def test_enter_lobby(self):
+    """
+    PATCH to lobby/<id>/enter_lobby/ is allowed to auth users that are not inside other lobby
+    """
+    pass
+  def test_leave_lobby(self):
+    """
+    PATCH to lobby/<id>/leave_lobby/ is allowed to auth users inside the lobby
+    """
+    pass
+  def test_start_game_lobby(self):
+    """
+    PATCH to lobby/<id>/start_game/ is allowed only to the owner
+    """
+    pass
     
     
