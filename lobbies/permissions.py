@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from lobbies.models import Lobby
 
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
@@ -32,3 +33,9 @@ class IsLobbyOwner(permissions.BasePermission):
 
   def has_object_permission(self, request, view, obj):
     return obj.owner == request.user
+  
+class IsNotInsideOtherLobby(permissions.BasePermission):
+  def has_permission(self, request, view):
+    if request.method != 'POST': return True
+    user = request.user
+    return not user.lobby.all().exists()
