@@ -104,23 +104,3 @@ Also, in this case you should change 3rd step of the proyect installation to:
 ```bash
 docker compose -f docker-compose-dev.yml up -d
 ```
-
-## Testing
-
-### lobby
-
-- [x] `GET /api-v1/lobby` - get all lobbies
-- [ ] `POST /api-v1/lobby` - create a new lobby - Authenticated users only
-- [ ] `GET /api-v1/lobby/:id` - get a lobby by id
-- [ ] `PUT /api-v1/lobby/:id` - update a lobby by id - Owner only
-- [ ] `PATCH /api-v1/lobby/:id` - partially update a lobby by id - Owner only
-- [ ] `DELETE /api-v1/lobby/:id` - delete a lobby by id - Owner only
-
-- [ ] `PATCH /api-v1/lobby/enter_lobby/` - enter a lobby - Authenticated users and without any lobby
-- [ ] `PATCH /api-v1/lobby/leave_lobby/` - leave a lobby - Users in lobby only
-- [ ] `PATCH /api-v1/lobby/start_game/` - start a game - Owner only
-
-#### Not implemented
-
-- [ ] `PATCH /api-v1/lobby/end_game/` - end a game - Owner only
-- [ ] `PATCH /api-v1/lobby/kick_user/` - remove a user from a lobby - Owner only

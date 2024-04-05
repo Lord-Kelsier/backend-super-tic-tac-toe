@@ -63,6 +63,7 @@ REST_FRAMEWORK = {
     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
   ],
   "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+  'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 MIDDLEWARE = [
@@ -108,6 +109,9 @@ DATABASES = {
     'PASSWORD': config["DB_PASSWORD"],
     'HOST': config["DB_HOST"],
     'PORT': config["DB_PORT"],        
+  },
+  'test': {
+    'NAME': f"test_{config['DB_NAME']}",
   }
 }
 

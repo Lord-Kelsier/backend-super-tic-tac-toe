@@ -2,7 +2,7 @@ from rest_framework import viewsets, permissions, status, schemas
 from rest_framework.decorators import action
 from .serializer import LobbySerializer
 from .models import Lobby
-from .permissions import IsOwnerOrReadOnly, IsInsideLobby, IsLobbyOwner
+from .permissions import IsOwnerOrReadOnly, IsInsideLobby, IsLobbyOwner, IsNotInsideOtherLobby
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 import coreapi
@@ -25,7 +25,7 @@ lobby_population_schema = schemas.ManualSchema(
 class LobbyView(viewsets.ModelViewSet):
   serializer_class = LobbySerializer
   queryset = Lobby.objects.all()
-  permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+  permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly, IsNotInsideOtherLobby]
   
   def perform_create(self, serializer):
     serializer.save(owner=self.request.user, started=False, players=[self.request.user])
@@ -36,7 +36,6 @@ class LobbyView(viewsets.ModelViewSet):
     queryset = Lobby.objects.all()
     lobby = get_object_or_404(queryset, pk=pk)
     user = self.request.user
-    print(user.lobby)
     if lobby.players.contains(user):
       return Response(data={
           'detail': f'Already inside lobby {lobby.title}'
