@@ -104,3 +104,5 @@ Also, in this case you should change 3rd step of the proyect installation to:
 ```bash
 docker compose -f docker-compose-dev.yml up -d
 ```
+
+En caso de que salga el error de que el archivo /App/entrypoint.sh no se encuentra. Debes asegurarte que la secuencia de final de linea del archivo corresponde e LF en vez de CRLF
