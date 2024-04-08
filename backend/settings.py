@@ -45,7 +45,8 @@ INSTALLED_APPS = [
   'corsheaders',
   'rest_framework',
   'lobbies',
-  'authentication'
+  'authentication',
+  'superttt'
 ]
 
 REST_FRAMEWORK = {
