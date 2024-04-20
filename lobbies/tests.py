@@ -4,8 +4,9 @@ from django.urls import reverse
 from faker import Faker
 from faker.providers import internet
 from authentication.tests import create_user
+from superttt.models import SuperTTT
 
-def create_lobby(user: User = None, game = 0, title = None) -> Lobby:
+def create_lobby(user: User = None, title = None) -> Lobby:
   fake = Faker()
   fake.add_provider(internet)
   if not user:
@@ -14,7 +15,6 @@ def create_lobby(user: User = None, game = 0, title = None) -> Lobby:
     title = fake.domain_word()
   lobby = Lobby.objects.create(
     owner = user,
-    game = game,
     title = title
   )
   lobby.players.set([user])
