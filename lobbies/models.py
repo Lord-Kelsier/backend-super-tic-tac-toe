@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from superttt.types import GameType
 
 class Lobby(models.Model):
   owner = models.OneToOneField(
@@ -8,7 +7,6 @@ class Lobby(models.Model):
     on_delete=models.CASCADE,
     related_name='ownedLobby',
   )
-  game = models.IntegerField(choices=GameType)
   title = models.CharField(max_length=255)
   started = models.BooleanField(default=False)
   players = models.ManyToManyField(User, related_name='lobby')

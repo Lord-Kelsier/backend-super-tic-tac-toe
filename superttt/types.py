@@ -4,5 +4,6 @@ class GameType(models.IntegerChoices):
   SUPERTTT = 0
   
 class SuperTTTPlayerSymbol(models.IntegerChoices):
-  CIRCLE = 0
-  CROSS = 1
+  NONE = 0
+  CIRCLE = 1
+  CROSS = 2
