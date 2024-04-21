@@ -19,15 +19,28 @@ class SuperTTT(Game):
     size=9
   )
   winner = models.IntegerField(SuperTTTPlayerSymbol, default=SuperTTTPlayerSymbol.NONE.value)
+  canMoveAnywhere = models.BooleanField(default=True)
+  nextBoardIndex = models.SmallIntegerField(default=0)
+
+  def set_next_constraints(self, inner_board_id):
+    if self.board[inner_board_id][9] != SuperTTTPlayerSymbol.NONE.value:
+      self.canMoveAnywhere = True
+    else:
+      self.canMoveAnywhere = False
+      self.nextBoardIndex = inner_board_id
+
   def make_move(self, outer_board_id, inner_board_id, player):
     valid = True
     if self.board[outer_board_id][inner_board_id] != SuperTTTPlayerSymbol.NONE.value:
       return not valid, self
     if self.board[outer_board_id][9] != SuperTTTPlayerSymbol.NONE.value:
       return not valid, self
+    if not self.canMoveAnywhere and self.nextBoardIndex != outer_board_id:
+      return not valid, self
     self.board[outer_board_id][inner_board_id] = player.symbol
     board_ended, board_winner = self.check_innner_board_win(board_index=outer_board_id)
     self.turn = SuperTTTPlayerSymbol.CROSS.value if self.turn == SuperTTTPlayerSymbol.CIRCLE.value else SuperTTTPlayerSymbol.CIRCLE.value
+    self.set_next_constraints(inner_board_id)
     self.save()
     if not board_ended:
       return valid, self

@@ -62,9 +62,10 @@ class SuperTTTViews(viewsets.ViewSet):
     
     player = SuperTTTPlayer.objects.get(user=request.user)
     valid, new_game_state = game.make_move(outer_board_id, inner_board_id, player)
+    if not valid:
+      return Response({
+        'data': 'move is not valid'
+      }, status=status.HTTP_400_BAD_REQUEST)
     new_game_serialized = SuperTTTSerializer(new_game_state)
-    return Response(data={
-      'isValid': valid,
-      'game': new_game_serialized.data
-    }, status=status.HTTP_200_OK)
+    return Response(new_game_serialized.data, status=status.HTTP_200_OK)
     
