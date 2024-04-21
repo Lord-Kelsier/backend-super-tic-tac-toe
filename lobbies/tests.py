@@ -4,8 +4,9 @@ from django.urls import reverse
 from faker import Faker
 from faker.providers import internet
 from authentication.tests import create_user
+from superttt.models import SuperTTT
 
-def create_lobby(user: User = None, game = 0, title = None) -> Lobby:
+def create_lobby(user: User = None, gameType = 0, title = None) -> Lobby:
   fake = Faker()
   fake.add_provider(internet)
   if not user:
@@ -14,8 +15,8 @@ def create_lobby(user: User = None, game = 0, title = None) -> Lobby:
     title = fake.domain_word()
   lobby = Lobby.objects.create(
     owner = user,
-    game = game,
-    title = title
+    title = title,
+    gameType = gameType
   )
   lobby.players.set([user])
   return lobby
@@ -52,8 +53,8 @@ class LobbyViewDetailTest(APITestCase):
     lobby.add_player(user_in_lobby)
     
     body = {
-      "game": 0,
-      "title": "myGame"
+      "gameType": 0,
+      "title": "myGame",
     }
     # No auth 
     request = self.client.post(reverse('lobby-list'),
@@ -92,7 +93,7 @@ class LobbyViewDetailTest(APITestCase):
     lobby.add_player(user_in_lobby)
     new_title = "myGame"
     body = {
-      "game": 0,
+      "gameType": 0,
       "title": new_title
     }
     url = reverse('lobby-detail', args=[lobby.id])

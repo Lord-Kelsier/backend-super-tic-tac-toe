@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 import coreapi
 import coreschema
+from superttt.models import SuperTTT, SuperTTTPlayerSymbol
 
 lobby_population_schema = schemas.ManualSchema(
     fields=[
@@ -35,6 +36,7 @@ class LobbyView(viewsets.ModelViewSet):
     pk = request.data['lobby_id']
     queryset = Lobby.objects.all()
     lobby = get_object_or_404(queryset, pk=pk)
+    self.check_object_permissions(request, lobby)
     user = self.request.user
     if lobby.players.contains(user):
       return Response(data={
@@ -58,6 +60,7 @@ class LobbyView(viewsets.ModelViewSet):
     pk = request.data['lobby_id']
     queryset = Lobby.objects.all()
     lobby = get_object_or_404(queryset, pk=pk)
+    self.check_object_permissions(request, lobby)
     user = self.request.user
     if lobby.owner == user:
       lobby.delete()
@@ -77,14 +80,13 @@ class LobbyView(viewsets.ModelViewSet):
     pk = request.data['lobby_id']
     queryset = Lobby.objects.all()
     lobby = get_object_or_404(queryset, pk=pk)
+    self.check_object_permissions(request, lobby)
     if lobby.players.count() != 2:
       return Response(data={
           'detail': 'Lobby must be full, 2 player needed for this game.'
         },
         status=status.HTTP_406_NOT_ACCEPTABLE
       )
-    lobby.started = True
-    lobby.save()
+    lobby.start_game()
     lobby_serializer = LobbySerializer(lobby)
-    # Falta lógica de inicio de juego
     return Response(data=lobby_serializer.data, status=status.HTTP_202_ACCEPTED)
