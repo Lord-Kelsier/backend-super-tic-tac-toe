@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from superttt.types import GameType
-from superttt.models import SuperTTT, SuperTTTPlayerSymbol
+from superttt.models import SuperTTT
 
 class Lobby(models.Model):
   owner = models.OneToOneField(
@@ -28,12 +28,8 @@ class Lobby(models.Model):
     self.players.remove(player)
 
   def start_game(self) -> None:
-    game = SuperTTT.objects.create(
-      gameType = self.gameType,
-      lobby = self,
-      turn = SuperTTTPlayerSymbol.CIRCLE.value,
-      board = [[SuperTTTPlayerSymbol.NONE.value for _ in range(10)] for __ in range(9)]
-    )
+    users = self.players.all()
+    game = SuperTTT.get_default_game(lobby = self, circle = users[0], cross = users[1])
     self.game = game
     self.started = True
     self.save()

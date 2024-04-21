@@ -19,6 +19,26 @@ class SuperTTT(Game):
   )
   winner = models.IntegerField(SuperTTTPlayerSymbol, default=SuperTTTPlayerSymbol.NONE.value)
 
+  def get_default_game(lobby, circle, cross):
+    game = SuperTTT.objects.create(
+      gameType = lobby.gameType,
+      lobby = lobby,
+      turn = SuperTTTPlayerSymbol.CIRCLE.value,
+      board = [[SuperTTTPlayerSymbol.NONE.value for _ in range(10)] for __ in range(9)]
+    )
+    circlePlayer = SuperTTTPlayer.objects.create(
+      user = circle,
+      symbol = SuperTTTPlayerSymbol.CIRCLE,
+      game = game
+    )
+    crossPlayer = SuperTTTPlayer.objects.create(
+      user = cross,
+      symbol = SuperTTTPlayerSymbol.CROSS,
+      game = game
+    )
+    game.players.set([circlePlayer, crossPlayer])
+    return game
+  
   def __str__(self) -> str:
     text = f"Turn: {self.turn} HasEnded: {self.ended} board: {self.board}\n"
     text += f"gameType: {self.gameType}\n"
@@ -30,4 +50,4 @@ class SuperTTTPlayer(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
   symbol = models.IntegerField(choices=SuperTTTPlayerSymbol)
   hasWon = models.BooleanField(default=False)
-  game = models.ForeignKey(SuperTTT, on_delete=models.CASCADE)
+  game = models.ForeignKey(SuperTTT, on_delete=models.CASCADE, related_name='players')
