@@ -26,3 +26,25 @@ class SuperTTTModelStartGameTest(APITestCase):
     self.assertEqual(response.status_code, 200)
     expected_board = [[0 for _ in range(10)] for __ in range(9)]
     self.assertListEqual(response.data['board'], expected_board)
+  
+  def test_permissions(self):
+    pass
+
+  def test_make_moves(self):
+    lobby = create_lobby()
+    newUser = create_user()
+    lobby.add_player(newUser)
+    self.client.force_authenticate(user = lobby.owner)
+    response = self.client.patch(reverse('lobby-start-game'), data={"lobby_id": lobby.id})
+    response = self.client.patch(
+      reverse('game-make-move', args=[response.data['game']['id']]),
+      data={
+        'outer_board_id': 0,
+        'inner_board_id': 0
+      }
+    )
+    self.assertTrue(response.data['isValid'])
+    expected_board = [[0 for _ in range(10)] for __ in range(9)]
+    expected_board[0][0] = 1
+    self.assertEqual(response.data['game']['board'], expected_board)
+  
