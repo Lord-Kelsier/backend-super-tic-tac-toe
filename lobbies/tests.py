@@ -53,8 +53,8 @@ class LobbyViewDetailTest(APITestCase):
     lobby.add_player(user_in_lobby)
     
     body = {
-      "game": 0,
-      "title": "myGame"
+      "gameType": 0,
+      "title": "myGame",
     }
     # No auth 
     request = self.client.post(reverse('lobby-list'),
@@ -93,7 +93,7 @@ class LobbyViewDetailTest(APITestCase):
     lobby.add_player(user_in_lobby)
     new_title = "myGame"
     body = {
-      "game": 0,
+      "gameType": 0,
       "title": new_title
     }
     url = reverse('lobby-detail', args=[lobby.id])
