@@ -31,6 +31,8 @@ class SuperTTT(Game):
     self.save()
     if not board_ended:
       return valid, self
+    self.board[outer_board_id][9] = board_winner
+    self.save()
     game_ended, winner = self.check_winner()
     if not game_ended:
       return valid, self
@@ -70,27 +72,22 @@ class SuperTTT(Game):
     inner_board = self.board[board_index]
     # Check rows
     for i in range(0, 9, 3):
-      if inner_board[i] == inner_board[i + 1] == inner_board[i + 2]:
-        self.board[board_index][9] = inner_board[i]
+      if inner_board[i] == inner_board[i + 1] == inner_board[i + 2] and inner_board[i] != SuperTTTPlayerSymbol.NONE.value:
         return True, inner_board[i]
     # Check columns
     for i in range(3):
-      if inner_board[i] == inner_board[i + 3] == inner_board[i + 6]:
-        self.board[board_index][9] = inner_board[i]
+      if inner_board[i] == inner_board[i + 3] == inner_board[i + 6] and inner_board[i] != SuperTTTPlayerSymbol.NONE.value:
         return True, inner_board[i]
     # Check diagonals
-    if inner_board[0] == inner_board[4] == inner_board[8]:
-      self.board[board_index][9] = inner_board[0]
+    if inner_board[0] == inner_board[4] == inner_board[8] and inner_board[i] != SuperTTTPlayerSymbol.NONE.value:
       return True, inner_board[0]
-    if inner_board[2] == inner_board[4] == inner_board[6]:
-      self.board[board_index][9] = inner_board[2]
+    if inner_board[2] == inner_board[4] == inner_board[6] and inner_board[i] != SuperTTTPlayerSymbol.NONE.value:
       return True, inner_board[2]
     # Check if filled
     for i in range(9):
       if inner_board[i] == SuperTTTPlayerSymbol.NONE.value:
         return False, SuperTTTPlayerSymbol.NONE.value
     # In case of draw
-    self.board[board_index][9] = SuperTTTPlayerSymbol.NULLPLAYER.value
     return True, SuperTTTPlayerSymbol.NULLPLAYER.value
 
 
