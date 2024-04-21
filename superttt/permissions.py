@@ -6,8 +6,6 @@ class IsInTurn(permissions.BasePermission):
   """
 
   def has_object_permission(self, request, view, obj):
-    return False
     user  = request.user
-    player = obj.players.filter(user = user.id)
-    print("player selected", player, flush=True)
+    player = obj.players.filter(user = user.id)[0]
     return obj.turn == player.symbol
