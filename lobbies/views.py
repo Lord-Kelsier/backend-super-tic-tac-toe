@@ -84,15 +84,6 @@ class LobbyView(viewsets.ModelViewSet):
         },
         status=status.HTTP_406_NOT_ACCEPTABLE
       )
-    lobby.started = True
-    # if gameType == SuperTTT
-    game = SuperTTT.objects.create(
-      gameType = lobby.gameType,
-      lobby = lobby,
-      turn = SuperTTTPlayerSymbol.CIRCLE.value,
-      board = [[SuperTTTPlayerSymbol.NONE.value for _ in range(10)] for __ in range(9)]
-    )
-    lobby.game = game
-    lobby.save()
+    lobby.start_game()
     lobby_serializer = LobbySerializer(lobby)
     return Response(data=lobby_serializer.data, status=status.HTTP_202_ACCEPTED)

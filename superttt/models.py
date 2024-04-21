@@ -1,13 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
-from lobbies.models import Lobby
 from .types import GameType, SuperTTTPlayerSymbol
 
 class Game(models.Model):
   gameType = models.IntegerField(choices=GameType)
   ended = models.BooleanField(default=False)
-  lobby = models.OneToOneField(Lobby, on_delete=models.CASCADE, related_name='game')
+  lobby = models.OneToOneField('lobbies.Lobby', on_delete=models.CASCADE, related_name='game')
 
 class SuperTTT(Game):
   turn = models.IntegerField(SuperTTTPlayerSymbol)
