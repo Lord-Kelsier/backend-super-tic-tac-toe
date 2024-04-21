@@ -12,7 +12,7 @@ class SuperTTT(Game):
   turn = models.IntegerField(SuperTTTPlayerSymbol)
   board = ArrayField(
     ArrayField(
-      models.CharField(max_length=1, blank=False),
+      models.IntegerField(choices=SuperTTTPlayerSymbol),
       size=10
     ),
     size=9
