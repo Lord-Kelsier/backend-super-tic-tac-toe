@@ -124,5 +124,4 @@ class SuperTTT(Game):
 class SuperTTTPlayer(models.Model):
   user = models.OneToOneField(User, on_delete=models.CASCADE)
   symbol = models.IntegerField(choices=SuperTTTPlayerSymbol)
-  hasWon = models.BooleanField(default=False)
   game = models.ForeignKey(SuperTTT, on_delete=models.CASCADE, related_name='players')
