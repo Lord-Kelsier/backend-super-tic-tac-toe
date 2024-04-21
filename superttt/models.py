@@ -18,7 +18,9 @@ class SuperTTT(Game):
     size=9
   )
   winner = models.IntegerField(SuperTTTPlayerSymbol, default=SuperTTTPlayerSymbol.NONE.value)
-
+  def make_move(self, outer_board_id, inner_board_id):
+    valid = False
+    return valid, self
   def get_default_game(lobby, circle, cross):
     game = SuperTTT.objects.create(
       gameType = lobby.gameType,
