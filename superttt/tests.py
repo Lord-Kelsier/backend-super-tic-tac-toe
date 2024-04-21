@@ -37,16 +37,16 @@ class SuperTTTModelInteractionTest(APITestCase):
     self.client.force_authenticate(user = lobby.owner)
     response = self.client.patch(reverse('lobby-start-game'), data={"lobby_id": lobby.id})
     response = self.client.patch(
-      reverse('game-make-move', args=[response.data['game']['id']]),
+      reverse('game-make-move', args=[response.data['id']]),
       data={
         'outer_board_id': 0,
         'inner_board_id': 0
       }
     )
-    self.assertTrue(response.data['isValid'])
+    self.assertEqual(response.status_code, 200)
     expected_board = [[0 for _ in range(10)] for __ in range(9)]
     expected_board[0][0] = 1
-    self.assertEqual(response.data['game']['board'], expected_board)
+    self.assertEqual(response.data['board'], expected_board)
 
 def make_move(client, game_id, outer, inner, player):
   client.force_authenticate(user = player)
@@ -67,7 +67,7 @@ class SuperTTTGameTest(APITestCase):
     lobby.add_player(player2)
     self.client.force_authenticate(user = player1)
     response = self.client.patch(reverse('lobby-start-game'), data={"lobby_id": lobby.id})
-    game_id = response.data['game']['id']
+    game_id = response.data['id']
     response = make_move(self.client, game_id, 0, 0, player1)
     response = make_move(self.client, game_id, 0, 4, player2)
     response = make_move(self.client, game_id, 4, 0, player1)
@@ -86,9 +86,9 @@ class SuperTTTGameTest(APITestCase):
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]
-    self.assertListEqual(response.data['game']['board'], expected_board)
-    self.assertFalse(response.data['game']['ended'])
-    self.assertEqual(response.data['game']['winner'], 0)
+    self.assertListEqual(response.data['board'], expected_board)
+    self.assertFalse(response.data['ended'])
+    self.assertEqual(response.data['winner'], 0)
     response = make_move(self.client, game_id, 7, 4, player1)
     response = make_move(self.client, game_id, 4, 4, player2)
     response = make_move(self.client, game_id, 4, 8, player1)
@@ -109,9 +109,9 @@ class SuperTTTGameTest(APITestCase):
       [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 1, 0, 0, 0, 2, 0],
     ]
-    self.assertListEqual(response.data['game']['board'], expected_board)
-    self.assertFalse(response.data['game']['ended'])
-    self.assertEqual(response.data['game']['winner'], 0)
+    self.assertListEqual(response.data['board'], expected_board)
+    self.assertFalse(response.data['ended'])
+    self.assertEqual(response.data['winner'], 0)
     response = make_move(self.client, game_id, 5, 8, player1)
     response = make_move(self.client, game_id, 8, 2, player2)
     response = make_move(self.client, game_id, 2, 8, player1)
@@ -128,6 +128,6 @@ class SuperTTTGameTest(APITestCase):
       [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
       [0, 0, 2, 0, 1, 2, 0, 0, 2, 2],
     ]
-    self.assertListEqual(response.data['game']['board'], expected_board)
-    self.assertTrue(response.data['game']['ended'])
-    self.assertEqual(response.data['game']['winner'], 2)
+    self.assertListEqual(response.data['board'], expected_board)
+    self.assertTrue(response.data['ended'])
+    self.assertEqual(response.data['winner'], 2)
