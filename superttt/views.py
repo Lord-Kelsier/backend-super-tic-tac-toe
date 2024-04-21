@@ -1,4 +1,4 @@
-from .models import SuperTTT
+from .models import SuperTTT, SuperTTTPlayer
 from .serializers import SuperTTTSerializer
 from rest_framework import viewsets, status, schemas
 from rest_framework.response import Response
@@ -46,17 +46,22 @@ class SuperTTTViews(viewsets.ViewSet):
   def make_move(self, request, pk=None):
     game = get_object_or_404(self.queryset, pk=pk)
     self.check_object_permissions(request, game)
+
     outer_board_id = request.data['outer_board_id']
     inner_board_id = request.data['inner_board_id']
+
     if not 0 <= outer_board_id < 9:
       return Response(data={
         'detail': 'invalid range of outer board id'
       }, status=status.HTTP_400_BAD_REQUEST)
+    
     if not 0 <=inner_board_id < 9:
       return Response(data={
         'detail': 'invalid range of inner board id'
       }, status=status.HTTP_400_BAD_REQUEST)
-    valid, new_game_state = game.make_move(outer_board_id, inner_board_id)
+    
+    player = SuperTTTPlayer.objects.get(user=request.user)
+    valid, new_game_state = game.make_move(outer_board_id, inner_board_id, player)
     new_game_serialized = SuperTTTSerializer(new_game_state)
     return Response(data={
       'isValid': valid,
