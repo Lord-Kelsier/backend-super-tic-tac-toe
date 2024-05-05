@@ -7,7 +7,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 import coreapi
 import coreschema
-from superttt.models import SuperTTT, SuperTTTPlayerSymbol
 
 lobby_population_schema = schemas.ManualSchema(
     fields=[

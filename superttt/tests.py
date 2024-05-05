@@ -9,7 +9,7 @@ def create_game(gameType=GameType.SUPERTTT):
       gameType = GameType.SUPERTTT.value,
       lobby = create_lobby(),
       turn = SuperTTTPlayerSymbol.CIRCLE,
-      board = [[SuperTTTPlayerSymbol.NONE.value for _ in range(10)] for __ in range(9)]
+      board = [[SuperTTTPlayerSymbol.NONE for _ in range(10)] for __ in range(9)]
     )
 class SuperTTTModelInteractionTest(APITestCase):
   def test_start_game(self):
