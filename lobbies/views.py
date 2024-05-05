@@ -13,7 +13,7 @@ lobby_population_schema = schemas.ManualSchema(
     fields=[
         coreapi.Field(
             "lobby_id",
-            location="query",
+            location="body",
             required=True,
             schema=coreschema.Integer(
                 title="lobby_id",
