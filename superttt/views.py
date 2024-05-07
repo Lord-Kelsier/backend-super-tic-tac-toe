@@ -1,5 +1,5 @@
 from .models import SuperTTT, SuperTTTPlayer
-from .serializers import SuperTTTSerializer
+from .serializers import SuperTTTSerializer, SuperTTTPlayerSerializer
 from rest_framework import viewsets, status, schemas
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -39,11 +39,15 @@ class SuperTTTViews(viewsets.ViewSet):
   permission_classes = [IsInsideLobby]
   def retrieve(self, request, pk=None):
     game = get_object_or_404(self.queryset, pk=pk)
+    print("-"*50)
     game_serialized = SuperTTTSerializer(game) 
-    body = {
-      "gameData": game_serialized.data,
-      "isUserInside": request.user in game.lobby.players.all()
-    }
+    userPlayer = game.players.all().filter(user=request.user)
+    body = {"gameData": game_serialized.data}
+    if len(userPlayer) != 1:
+      body["userPlayer"] = None
+    else:
+      userPlayerSerialized = SuperTTTPlayerSerializer(userPlayer[0])
+      body["userPlayer"] = userPlayerSerialized.data
     return Response(data=body, status=status.HTTP_200_OK)
 
   @action(detail=True, methods=['patch'], schema=make_move_schema, permission_classes=[IsInTurn])

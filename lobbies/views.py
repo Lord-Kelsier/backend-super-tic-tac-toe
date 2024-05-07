@@ -32,7 +32,8 @@ class LobbyView(viewsets.ModelViewSet):
     game_serialized = LobbySerializer(lobby) 
     body = {
       "lobbyData": game_serialized.data,
-      "isUserInside": request.user in lobby.players.all()
+      "isUserInside": request.user in lobby.players.all(),
+      "isUserOwner": request.user.id == lobby.owner.id
     }
     return Response(data=body, status=status.HTTP_200_OK)
   
@@ -85,7 +86,7 @@ class LobbyView(viewsets.ModelViewSet):
   
   @action(detail=False, methods=['patch'], permission_classes=[IsLobbyOwner], schema=lobby_population_schema)
   def start_game(self, request):
-    pk = request.data['lobby_id']
+    pk = request.data
     queryset = Lobby.objects.all()
     lobby = get_object_or_404(queryset, pk=pk)
     self.check_object_permissions(request, lobby)
