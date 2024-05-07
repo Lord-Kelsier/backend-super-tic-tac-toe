@@ -39,7 +39,6 @@ class SuperTTTViews(viewsets.ViewSet):
   permission_classes = [IsInsideLobby]
   def retrieve(self, request, pk=None):
     game = get_object_or_404(self.queryset, pk=pk)
-    print("-"*50)
     game_serialized = SuperTTTSerializer(game) 
     userPlayer = game.players.all().filter(user=request.user)
     body = {"gameData": game_serialized.data}

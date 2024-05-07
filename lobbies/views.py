@@ -21,6 +21,7 @@ lobby_population_schema = schemas.ManualSchema(
         ),
     ],
     description="It enables you to enter or leave a lobby. In case, you are the owner of the lobby, it gets deleted upon leave.",
+    encoding='application/json'
 )
 class LobbyView(viewsets.ModelViewSet):
   serializer_class = LobbySerializer
@@ -86,7 +87,7 @@ class LobbyView(viewsets.ModelViewSet):
   
   @action(detail=False, methods=['patch'], permission_classes=[IsLobbyOwner], schema=lobby_population_schema)
   def start_game(self, request):
-    pk = request.data
+    pk = request.data['lobby_id']
     queryset = Lobby.objects.all()
     lobby = get_object_or_404(queryset, pk=pk)
     self.check_object_permissions(request, lobby)
