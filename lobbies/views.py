@@ -26,6 +26,15 @@ class LobbyView(viewsets.ModelViewSet):
   serializer_class = LobbySerializer
   queryset = Lobby.objects.all()
   permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly, IsNotInsideOtherLobby]
+
+  def retrieve(self, request, pk=None):
+    lobby = get_object_or_404(self.queryset, pk=pk)
+    game_serialized = LobbySerializer(lobby) 
+    body = {
+      "lobbyData": game_serialized.data,
+      "isUserInside": request.user in lobby.players.all()
+    }
+    return Response(data=body, status=status.HTTP_200_OK)
   
   def perform_create(self, serializer):
     serializer.save(owner=self.request.user, started=False, players=[self.request.user])

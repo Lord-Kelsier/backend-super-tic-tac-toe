@@ -40,7 +40,11 @@ class SuperTTTViews(viewsets.ViewSet):
   def retrieve(self, request, pk=None):
     game = get_object_or_404(self.queryset, pk=pk)
     game_serialized = SuperTTTSerializer(game) 
-    return Response(data=game_serialized.data, status=status.HTTP_200_OK)
+    body = {
+      "gameData": game_serialized.data,
+      "isUserInside": request.user in game.lobby.players.all()
+    }
+    return Response(data=body, status=status.HTTP_200_OK)
 
   @action(detail=True, methods=['patch'], schema=make_move_schema, permission_classes=[IsInTurn])
   def make_move(self, request, pk=None):

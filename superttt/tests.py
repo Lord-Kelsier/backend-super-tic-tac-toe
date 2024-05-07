@@ -25,7 +25,7 @@ class SuperTTTModelInteractionTest(APITestCase):
     response = self.client.get(reverse('game-detail', args=[game['id']]))
     self.assertEqual(response.status_code, 200)
     expected_board = [[0 for _ in range(10)] for __ in range(9)]
-    self.assertListEqual(response.data['board'], expected_board)
+    self.assertListEqual(response.data['gameData']['board'], expected_board)
   
   def test_permissions(self):
     pass
@@ -37,7 +37,7 @@ class SuperTTTModelInteractionTest(APITestCase):
     self.client.force_authenticate(user = lobby.owner)
     response = self.client.patch(reverse('lobby-start-game'), data={"lobby_id": lobby.id})
     response = self.client.patch(
-      reverse('game-make-move', args=[response.data['id']]),
+      reverse('game-make-move', args=[response.data['game']['id']]),
       data={
         'outer_board_id': 0,
         'inner_board_id': 0
@@ -67,7 +67,7 @@ class SuperTTTGameTest(APITestCase):
     lobby.add_player(player2)
     self.client.force_authenticate(user = player1)
     response = self.client.patch(reverse('lobby-start-game'), data={"lobby_id": lobby.id})
-    game_id = response.data['id']
+    game_id = response.data['game']['id']
     response = make_move(self.client, game_id, 0, 0, player1)
     response = make_move(self.client, game_id, 0, 4, player2)
     response = make_move(self.client, game_id, 4, 0, player1)
