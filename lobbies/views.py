@@ -91,6 +91,12 @@ class LobbyView(viewsets.ModelViewSet):
     queryset = Lobby.objects.all()
     lobby = get_object_or_404(queryset, pk=pk)
     self.check_object_permissions(request, lobby)
+    if lobby.started:
+      return Response(data={
+        'detail': 'Game is already started.'
+      }, 
+      status=status.HTTP_400_BAD_REQUEST 
+    )
     if lobby.players.count() != 2:
       return Response(data={
           'detail': 'Lobby must be full, 2 player needed for this game.'
